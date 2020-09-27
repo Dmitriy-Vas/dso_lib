@@ -1,7 +1,7 @@
 package wrapper
 
 import (
-	"github.com/Dmitriy-Vas/wave_buffer"
+	buffer "github.com/Dmitriy-Vas/wave_buffer"
 	"time"
 )
 
@@ -16,11 +16,11 @@ func (b *Buffer) Clone() buffer.PacketBuffer {
 }
 
 func (b *Buffer) WriteBool(data []byte, value bool, index uint64) {
-	var v int32 = 0
+	var v byte = 0
 	if value {
 		v = 1
 	}
-	b.DefaultBuffer.WriteInt(data, v, index)
+	b.WriteByte(data, v, index)
 }
 
 func (b *Buffer) WriteByte(data []byte, value byte, index uint64) {
@@ -43,7 +43,7 @@ func WriteDate(buffer buffer.PacketBuffer, t time.Time) {
 }
 
 func (b *Buffer) ReadBool(data []byte, index uint64) bool {
-	return b.DefaultBuffer.ReadInt(data, index) != 0
+	return b.ReadByte(data, index) != 0
 }
 
 func (b *Buffer) ReadByte(data []byte, index uint64) byte {
