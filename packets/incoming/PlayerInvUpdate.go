@@ -36,7 +36,7 @@ type PlayerInvUpdatePacket struct {
 func (packet *PlayerInvUpdatePacket) Read(b buffer.PacketBuffer) {
 	packet.InvSlot = b.ReadByte(b.Bytes(), b.Index())
 	packet.Item = dso_lib.InvItemRec{
-		Num:   b.ReadInt(b.Bytes(), b.Index()),
+		Num:   b.ReadUShort(b.Bytes(), b.Index()),
 		Value: b.ReadLong(b.Bytes(), b.Index()),
 		Slot:  b.ReadByte(b.Bytes(), b.Index()),
 	}
@@ -51,7 +51,7 @@ func (packet *PlayerInvUpdatePacket) Read(b buffer.PacketBuffer) {
 
 func (packet *PlayerInvUpdatePacket) Write(b buffer.PacketBuffer) {
 	b.WriteByte(b.Bytes(), packet.InvSlot, b.Index())
-	b.WriteInt(b.Bytes(), packet.Item.Num, b.Index())
+	b.WriteUShort(b.Bytes(), packet.Item.Num, b.Index())
 	b.WriteLong(b.Bytes(), packet.Item.Value, b.Index())
 	b.WriteByte(b.Bytes(), packet.Item.Slot, b.Index())
 	if dso_lib.GetItemInt(packet.Item.Num, dso_lib.ItemEnhancement) > 0 {

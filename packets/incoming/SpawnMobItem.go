@@ -37,7 +37,7 @@ func (packet *SpawnMobItemPacket) Read(b buffer.PacketBuffer) {
 	if packet.ItemIndex = b.ReadInt(b.Bytes(), b.Index()); packet.ItemIndex != 0 && packet.ItemIndex <= 255 {
 		item := dso_lib.MapItemRec{
 			Item: dso_lib.InvItemRec{
-				Num: b.ReadInt(b.Bytes(), b.Index()),
+				Num: b.ReadUShort(b.Bytes(), b.Index()),
 			},
 		}
 		if item.Item.Num > 0 {
@@ -57,7 +57,7 @@ func (packet *SpawnMobItemPacket) Read(b buffer.PacketBuffer) {
 func (packet *SpawnMobItemPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.ItemIndex, b.Index())
 	if packet.ItemIndex != 0 && packet.ItemIndex <= 255 {
-		b.WriteInt(b.Bytes(), packet.MapItem.Item.Num, b.Index())
+		b.WriteUShort(b.Bytes(), packet.MapItem.Item.Num, b.Index())
 		if packet.MapItem.Item.Num > 0 {
 			b.WriteInt(b.Bytes(), int32(packet.MapItem.Item.Value), b.Index())
 			b.WriteInt(b.Bytes(), packet.MapItem.PIndex, b.Index())

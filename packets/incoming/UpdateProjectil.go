@@ -36,11 +36,11 @@ func (packet *UpdateProjectilPacket) Read(b buffer.PacketBuffer) {
 	if packet.ProjectilNum = b.ReadInt(b.Bytes(), b.Index()); packet.ProjectilNum != 0 && packet.ProjectilNum < 100 {
 		packet.Projectil = dso_lib.ProjectilRec{
 			Name:      b.ReadString(b.Bytes(), b.Index(), 0),
-			Damage:    int64(b.ReadInt(b.Bytes(), b.Index())),
-			Pic:       b.ReadInt(b.Bytes(), b.Index()),
-			Range:     int64(b.ReadInt(b.Bytes(), b.Index())),
-			Speed:     int64(b.ReadInt(b.Bytes(), b.Index())),
-			Animation: int64(b.ReadInt(b.Bytes(), b.Index())),
+			Damage:    b.ReadInt(b.Bytes(), b.Index()),
+			Pic:       uint16(b.ReadInt(b.Bytes(), b.Index())),
+			Range:     byte(b.ReadInt(b.Bytes(), b.Index())),
+			Speed:     uint16(b.ReadInt(b.Bytes(), b.Index())),
+			Animation: uint16(b.ReadInt(b.Bytes(), b.Index())),
 			Light:     b.ReadBool(b.Bytes(), b.Index()),
 			Int:       make([]int32, 3), // TODO move to constants
 		}
@@ -54,8 +54,8 @@ func (packet *UpdateProjectilPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.ProjectilNum, b.Index())
 	if packet.ProjectilNum != 0 && packet.ProjectilNum < 100 {
 		b.WriteString(b.Bytes(), packet.Projectil.Name, b.Index())
-		b.WriteInt(b.Bytes(), int32(packet.Projectil.Damage), b.Index())
-		b.WriteInt(b.Bytes(), packet.Projectil.Pic, b.Index())
+		b.WriteInt(b.Bytes(), packet.Projectil.Damage, b.Index())
+		b.WriteInt(b.Bytes(), int32(packet.Projectil.Pic), b.Index())
 		b.WriteInt(b.Bytes(), int32(packet.Projectil.Range), b.Index())
 		b.WriteInt(b.Bytes(), int32(packet.Projectil.Speed), b.Index())
 		b.WriteInt(b.Bytes(), int32(packet.Projectil.Animation), b.Index())

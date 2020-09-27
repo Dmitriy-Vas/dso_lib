@@ -49,6 +49,8 @@ func (packet *PartyUpdatePacket) Read(b buffer.PacketBuffer) {
 			party.Member[i].Sprite = b.ReadInt(b.Bytes(), b.Index())
 			party.Member[i].Hair = b.ReadInt(b.Bytes(), b.Index())
 			party.Member[i].HairTint = b.ReadString(b.Bytes(), b.Index(), 0)
+			party.Member[i].Helmet = b.ReadInt(b.Bytes(), b.Index())
+			party.Member[i].Mask = b.ReadInt(b.Bytes(), b.Index())
 		}
 		party.ShareItems = b.ReadBool(b.Bytes(), b.Index())
 		packet.Party = party

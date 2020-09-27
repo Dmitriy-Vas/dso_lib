@@ -6,7 +6,7 @@ import (
 )
 
 func PlayerInvData(b buffer.PacketBuffer, slot int) {
-	Global.PlayerInventory[slot].Num = b.ReadInt(b.Bytes(), b.Index())
+	Global.PlayerInventory[slot].Num = b.ReadUShort(b.Bytes(), b.Index())
 	Global.PlayerInventory[slot].Value = b.ReadLong(b.Bytes(), b.Index())
 	Global.PlayerInventory[slot].Slot = b.ReadByte(b.Bytes(), b.Index())
 	if GetItemInt(Global.PlayerInventory[slot].Num, ItemEnhancement) > 0 {
@@ -17,7 +17,7 @@ func PlayerInvData(b buffer.PacketBuffer, slot int) {
 	}
 }
 
-func GetItemInt(itemNum int32, property ItemPropertyType) int32 {
+func GetItemInt(itemNum uint16, property ItemPropertyType) int32 {
 	if itemNum == 0 || itemNum > 1200 {
 		return 0
 	}
@@ -28,13 +28,13 @@ func GetItemInt(itemNum int32, property ItemPropertyType) int32 {
 }
 
 func SetPlayerCashInvItem(slot int, itemNum int32, itemValue int32) {
-	Global.PlayerCashInventory[slot].Num = itemNum
+	Global.PlayerCashInventory[slot].Num = uint16(itemNum)
 	Global.PlayerCashInventory[slot].Value = int64(itemValue)
 }
 
 func ReadPlayerBankData(b buffer.PacketBuffer) InvItemRec {
 	item := InvItemRec{
-		Num:   b.ReadInt(b.Bytes(), b.Index()),
+		Num:   b.ReadUShort(b.Bytes(), b.Index()),
 		Value: b.ReadLong(b.Bytes(), b.Index()),
 		Slot:  b.ReadByte(b.Bytes(), b.Index()),
 		Stat:  make([]byte, 6),
@@ -48,7 +48,7 @@ func ReadPlayerBankData(b buffer.PacketBuffer) InvItemRec {
 }
 
 func WritePlayerBankData(b buffer.PacketBuffer, item InvItemRec) {
-	b.WriteInt(b.Bytes(), item.Num, b.Index())
+	b.WriteUShort(b.Bytes(), item.Num, b.Index())
 	b.WriteLong(b.Bytes(), item.Value, b.Index())
 	b.WriteByte(b.Bytes(), item.Slot, b.Index())
 	if true { //modTypes.Item[ptr.Num].Int[13] > 0; TODO

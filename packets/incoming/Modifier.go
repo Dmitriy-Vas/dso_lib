@@ -1,6 +1,7 @@
 package incoming
 
 import (
+	"github.com/Dmitriy-Vas/dso_lib"
 	"github.com/Dmitriy-Vas/wave_buffer"
 )
 
@@ -25,45 +26,48 @@ func (packet *ModifierPacket) SetSend(value bool) {
 }
 
 type ModifierPacket struct {
-	ID         int64
-	Send       bool
-	Variable0  int64
-	Variable1  float64
-	Variable2  int32
-	Variable3  bool
-	Variable4  string
-	Variable5  int32
-	Variable6  int32
-	Variable7  string
-	Variable8  string
-	Variable9  int32
-	Variable10 float64
+	ID   int64
+	Send bool
+
+	Mods       []dso_lib.ServerModRec
+	WorldBless dso_lib.WorldBlessRec
 }
 
 func (packet *ModifierPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadDouble(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable3 = b.ReadBool(b.Bytes(), b.Index())
-	packet.Variable4 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable5 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable6 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable7 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable8 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable9 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable10 = b.ReadDouble(b.Bytes(), b.Index())
+	packet.Mods = make([]dso_lib.ServerModRec, 12)
+	for i := range packet.Mods {
+		packet.Mods[i] = dso_lib.ServerModRec{
+			Value: b.ReadDouble(b.Bytes(), b.Index()),
+			Timer: int64(b.ReadInt(b.Bytes(), b.Index())),
+		}
+	}
+	packet.WorldBless = dso_lib.WorldBlessRec{
+		Active: b.ReadBool(b.Bytes(), b.Index()),
+	}
+	if packet.WorldBless.Active {
+		packet.WorldBless.Owner = b.ReadString(b.Bytes(), b.Index(), 0)
+		packet.WorldBless.Sprite = b.ReadInt(b.Bytes(), b.Index())
+		packet.WorldBless.Hair = b.ReadInt(b.Bytes(), b.Index())
+		packet.WorldBless.HairTint = b.ReadString(b.Bytes(), b.Index(), 0)
+		packet.WorldBless.Paperdoll = b.ReadString(b.Bytes(), b.Index(), 0)
+		packet.WorldBless.Time = b.ReadInt(b.Bytes(), b.Index())
+		packet.WorldBless.Value = b.ReadDouble(b.Bytes(), b.Index())
+	}
 }
 
 func (packet *ModifierPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteDouble(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable2, b.Index())
-	b.WriteBool(b.Bytes(), packet.Variable3, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable4, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable5, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable6, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable7, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable8, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable9, b.Index())
-	b.WriteDouble(b.Bytes(), packet.Variable10, b.Index())
+	for _, mod := range packet.Mods {
+		b.WriteDouble(b.Bytes(), mod.Value, b.Index())
+		b.WriteInt(b.Bytes(), int32(mod.Timer), b.Index())
+	}
+	b.WriteBool(b.Bytes(), packet.WorldBless.Active, b.Index())
+	if packet.WorldBless.Active {
+		b.WriteString(b.Bytes(), packet.WorldBless.Owner, b.Index())
+		b.WriteInt(b.Bytes(), packet.WorldBless.Sprite, b.Index())
+		b.WriteInt(b.Bytes(), packet.WorldBless.Hair, b.Index())
+		b.WriteString(b.Bytes(), packet.WorldBless.HairTint, b.Index())
+		b.WriteString(b.Bytes(), packet.WorldBless.Paperdoll, b.Index())
+		b.WriteInt(b.Bytes(), packet.WorldBless.Time, b.Index())
+		b.WriteDouble(b.Bytes(), packet.WorldBless.Value, b.Index())
+	}
 }

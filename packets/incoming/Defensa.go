@@ -27,22 +27,19 @@ func (packet *DefensaPacket) SetSend(value bool) {
 type DefensaPacket struct {
 	ID        int64
 	Send      bool
-	PlayerNum int32
-	ShieldHP  int64
-	Num2      int64
-	Variable4 int64
+	PlayerNum uint16
+	ShieldHP  uint16
+	Status    bool
 }
 
 func (packet *DefensaPacket) Read(b buffer.PacketBuffer) {
-	packet.PlayerNum = b.ReadInt(b.Bytes(), b.Index())
-	packet.ShieldHP = b.ReadLong(b.Bytes(), b.Index())
-	packet.Num2 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable4 = b.ReadLong(b.Bytes(), b.Index())
+	packet.PlayerNum = b.ReadUShort(b.Bytes(), b.Index())
+	packet.ShieldHP = b.ReadUShort(b.Bytes(), b.Index())
+	packet.Status = b.ReadBool(b.Bytes(), b.Index())
 }
 
 func (packet *DefensaPacket) Write(b buffer.PacketBuffer) {
-	b.WriteInt(b.Bytes(), packet.PlayerNum, b.Index())
-	b.WriteLong(b.Bytes(), packet.ShieldHP, b.Index())
-	b.WriteLong(b.Bytes(), packet.Num2, b.Index())
-	b.WriteLong(b.Bytes(), packet.Variable4, b.Index())
+	b.WriteUShort(b.Bytes(), packet.PlayerNum, b.Index())
+	b.WriteUShort(b.Bytes(), packet.ShieldHP, b.Index())
+	b.WriteBool(b.Bytes(), packet.Status, b.Index())
 }

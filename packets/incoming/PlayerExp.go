@@ -1,6 +1,7 @@
 package incoming
 
 import (
+	"github.com/Dmitriy-Vas/dso_lib"
 	"github.com/Dmitriy-Vas/wave_buffer"
 )
 
@@ -25,36 +26,34 @@ func (packet *PlayerExpPacket) SetSend(value bool) {
 }
 
 type PlayerExpPacket struct {
-	ID        int64
-	Send      bool
-	Variable0 int64
-	Variable1 int32
-	Variable2 int64
-	Variable3 int64
-	Variable4 byte
-	Variable5 int32
-	Variable6 byte
-	Variable7 int64
+	ID               int64
+	Send             bool
+	Exp              int64
+	Num              int64
+	PlayerProfession []dso_lib.PlayerProfessionRec
 }
 
 func (packet *PlayerExpPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable3 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable4 = b.ReadByte(b.Bytes(), b.Index())
-	packet.Variable5 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable6 = b.ReadByte(b.Bytes(), b.Index())
-	packet.Variable7 = b.ReadLong(b.Bytes(), b.Index())
+	packet.Exp = b.ReadLong(b.Bytes(), b.Index())
+	packet.Num = b.ReadLong(b.Bytes(), b.Index())
+	packet.PlayerProfession = make([]dso_lib.PlayerProfessionRec, 4)
+	for i := range packet.PlayerProfession {
+		packet.PlayerProfession[i] = dso_lib.PlayerProfessionRec{
+			Level:  b.ReadByte(b.Bytes(), b.Index()),
+			EXP:    b.ReadInt(b.Bytes(), b.Index()),
+			Points: b.ReadByte(b.Bytes(), b.Index()),
+			Times:  b.ReadLong(b.Bytes(), b.Index()),
+		}
+	}
 }
 
 func (packet *PlayerExpPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteLong(b.Bytes(), packet.Variable2, b.Index())
-	b.WriteLong(b.Bytes(), packet.Variable3, b.Index())
-	b.WriteByte(b.Bytes(), packet.Variable4, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable5, b.Index())
-	b.WriteByte(b.Bytes(), packet.Variable6, b.Index())
-	b.WriteLong(b.Bytes(), packet.Variable7, b.Index())
+	b.WriteLong(b.Bytes(), packet.Exp, b.Index())
+	b.WriteLong(b.Bytes(), packet.Num, b.Index())
+	for _, profession := range packet.PlayerProfession {
+		b.WriteByte(b.Bytes(), profession.Level, b.Index())
+		b.WriteInt(b.Bytes(), profession.EXP, b.Index())
+		b.WriteByte(b.Bytes(), profession.Points, b.Index())
+		b.WriteLong(b.Bytes(), profession.Times, b.Index())
+	}
 }

@@ -29,12 +29,12 @@ type PlayerBuddiesRec struct {
 	Name       string
 	Sex        byte
 	Classes    byte
-	Sprite     int
-	Hair       int
+	Sprite     uint16
+	Hair       uint16
 	FriendDate string
 	Paperdoll  string
 	HairTint   string
-	Online     bool
+	Status     bool
 }
 
 type WorldRec struct {
@@ -125,7 +125,7 @@ type PlayerProfessionRec struct {
 	Level   byte
 	Upgrade []byte
 	Points  byte
-	EXP     int
+	EXP     int32
 	Times   int64
 }
 
@@ -217,7 +217,7 @@ type MyMusicRec struct {
 	File   []byte
 }
 
-type createCharRec struct {
+type CreateCharRec struct {
 	ClassSelect    int
 	SexSelect      byte
 	HairSelect     int
@@ -302,7 +302,7 @@ type DrillModRec struct {
 	Pause      bool
 	SoundIndex int32
 	Dir        byte
-	DirStar    int32
+	DirStar    byte
 }
 
 type ConnectionRec struct {
@@ -350,13 +350,6 @@ type UIRec struct {
 	ExpBarPercent bool
 }
 
-type newRECT struct {
-	top    int
-	left   int
-	right  int
-	bottom int
-}
-
 type PartyRec struct {
 	Leader      int32
 	Member      []MemberPartyRec
@@ -381,10 +374,12 @@ type MemberPartyRec struct {
 	Map      int32
 	Name     string
 	HairTint string
+	Mask     int32
+	Helmet   int32
 }
 
 type InvItemRec struct {
-	Num   int32
+	Num   uint16
 	Value int64
 	Slot  byte
 	Stat  []byte
@@ -579,7 +574,7 @@ type MapEventRec struct {
 	Offset  objects.Vector2
 }
 
-type spriteData struct {
+type SpriteData struct {
 	Flash bool
 	Hide  bool
 }
@@ -1069,15 +1064,27 @@ type ProjectilRec struct {
 	Y          int64
 	StateX     int64
 	StateY     int64
-	Pic        int32
-	Range      int64
-	Damage     int64
-	Speed      int64
+	Pic        uint16
+	Range      byte
+	Damage     int32
+	Speed      uint16
 	Timer      int64
 	Combo      int64
-	Animation  int64
+	Animation  uint16
 	Light      bool
 	Int        []int32
+}
+
+type ProjectilCacheRec struct {
+	Num        uint16
+	TravelTime int64
+	Timer      int64
+	Direction  byte
+	Combo      byte
+	X          int16
+	Y          int16
+	StateX     int16
+	StateY     int16
 }
 
 type MoralRec struct {
@@ -1319,13 +1326,6 @@ type ActionRec struct {
 	Var        []string
 	VarType    []byte
 	BreakPoint bool
-}
-
-type tmrEnvinromentRec struct {
-	X   int64
-	Y   int64
-	tmr int64
-	rnd int64
 }
 
 type MapEditorDataRec struct {

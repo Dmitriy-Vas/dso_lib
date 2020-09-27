@@ -169,11 +169,11 @@ func (packet *GameDataPacket) RealRead(b buffer.PacketBuffer) {
 		packet.ProjectilsNum[i] = b.ReadInt(b.Bytes(), b.Index())
 		projectil := dso_lib.ProjectilRec{
 			Name:      b.ReadString(b.Bytes(), b.Index(), 0),
-			Damage:    int64(b.ReadInt(b.Bytes(), b.Index())),
-			Pic:       b.ReadInt(b.Bytes(), b.Index()),
-			Range:     int64(b.ReadInt(b.Bytes(), b.Index())),
-			Speed:     int64(b.ReadInt(b.Bytes(), b.Index())),
-			Animation: int64(b.ReadInt(b.Bytes(), b.Index())),
+			Damage:    b.ReadInt(b.Bytes(), b.Index()),
+			Pic:       b.ReadUShort(b.Bytes(), b.Index()),
+			Range:     b.ReadByte(b.Bytes(), b.Index()),
+			Speed:     b.ReadUShort(b.Bytes(), b.Index()),
+			Animation: b.ReadUShort(b.Bytes(), b.Index()),
 			Light:     b.ReadBool(b.Bytes(), b.Index()),
 			Int:       make([]int32, 3), // TODO int to const
 		}
@@ -240,7 +240,7 @@ func (packet *GameDataPacket) RealRead(b buffer.PacketBuffer) {
 	packet.DailyCheck = make([]dso_lib.InvItemRec, 28) // TODO int to const
 	for i := range packet.DailyCheck {
 		packet.DailyCheck[i] = dso_lib.InvItemRec{
-			Num:   b.ReadInt(b.Bytes(), b.Index()),
+			Num:   b.ReadUShort(b.Bytes(), b.Index()),
 			Value: b.ReadLong(b.Bytes(), b.Index()),
 		}
 	}

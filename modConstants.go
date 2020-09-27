@@ -2,6 +2,7 @@ package dso_lib
 
 // Information about steam achievements
 // https://steamdb.info/app/1020780/stats/
+//noinspection ALL
 const (
 	ACHIEVEMENT_AW_DEATH             = "AW_DEATH"
 	ACHIEVEMENT_AW_REACHESIA         = "AW_REACHESIA"

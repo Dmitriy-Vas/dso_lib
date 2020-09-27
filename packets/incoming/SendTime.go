@@ -1,7 +1,9 @@
 package incoming
 
 import (
+	"github.com/Dmitriy-Vas/dso_lib/wrapper"
 	"github.com/Dmitriy-Vas/wave_buffer"
+	"time"
 )
 
 // GetID returns packet ID.
@@ -25,15 +27,18 @@ func (packet *SendTimePacket) SetSend(value bool) {
 }
 
 type SendTimePacket struct {
-	ID      int64
-	Send    bool
-	DayTime bool
+	ID             int64
+	Send           bool
+	DayTime        bool
+	ServerTimezone time.Time
 }
 
 func (packet *SendTimePacket) Read(b buffer.PacketBuffer) {
 	packet.DayTime = b.ReadBool(b.Bytes(), b.Index())
+	packet.ServerTimezone = wrapper.ReadDate(b)
 }
 
 func (packet *SendTimePacket) Write(b buffer.PacketBuffer) {
 	b.WriteBool(b.Bytes(), packet.DayTime, b.Index())
+	wrapper.WriteDate(b, packet.ServerTimezone)
 }

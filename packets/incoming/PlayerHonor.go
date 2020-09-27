@@ -29,19 +29,19 @@ func (packet *PlayerHonorPacket) SetSend(value bool) {
 type PlayerHonorPacket struct {
 	ID        int64
 	Send      bool
-	PlayerNum int32
+	PlayerNum uint16
 	Honor     int32
 	HonorDate time.Time
 }
 
 func (packet *PlayerHonorPacket) Read(b buffer.PacketBuffer) {
-	packet.PlayerNum = b.ReadInt(b.Bytes(), b.Index())
+	packet.PlayerNum = b.ReadUShort(b.Bytes(), b.Index())
 	packet.Honor = b.ReadInt(b.Bytes(), b.Index())
 	packet.HonorDate = wrapper.ReadDate(b)
 }
 
 func (packet *PlayerHonorPacket) Write(b buffer.PacketBuffer) {
-	b.WriteInt(b.Bytes(), packet.PlayerNum, b.Index())
+	b.WriteUShort(b.Bytes(), packet.PlayerNum, b.Index())
 	b.WriteInt(b.Bytes(), packet.Honor, b.Index())
 	wrapper.WriteDate(b, packet.HonorDate)
 }

@@ -58,4 +58,3 @@ var Global = NewGlobals()
 
 var Item = make([]ItemRec, 1201)  // TODO fill
 var Quest = make([]QuestRec, 201) // TODO fill
-var MyIndex = 0

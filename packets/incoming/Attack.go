@@ -27,19 +27,19 @@ func (packet *AttackPacket) SetSend(value bool) {
 type AttackPacket struct {
 	ID        int64
 	Send      bool
-	Player    int32
+	Player    uint16
 	Attacking byte
-	FileID    byte
+	FileName  string
 }
 
 func (packet *AttackPacket) Read(b buffer.PacketBuffer) {
-	packet.Player = b.ReadInt(b.Bytes(), b.Index())
+	packet.Player = b.ReadUShort(b.Bytes(), b.Index())
 	packet.Attacking = b.ReadByte(b.Bytes(), b.Index())
-	packet.FileID = b.ReadByte(b.Bytes(), b.Index())
+	packet.FileName = b.ReadString(b.Bytes(), b.Index(), 0)
 }
 
 func (packet *AttackPacket) Write(b buffer.PacketBuffer) {
-	b.WriteInt(b.Bytes(), packet.Player, b.Index())
+	b.WriteUShort(b.Bytes(), packet.Player, b.Index())
 	b.WriteByte(b.Bytes(), packet.Attacking, b.Index())
-	b.WriteByte(b.Bytes(), packet.FileID, b.Index())
+	b.WriteString(b.Bytes(), packet.FileName, b.Index())
 }

@@ -33,7 +33,7 @@ type PlayerMessagePacket struct {
 	Message   string
 	Color     string
 	Variable1 bool
-	ItemNum   int32
+	ItemNum   uint16
 }
 
 func (packet *PlayerMessagePacket) Read(b buffer.PacketBuffer) {
@@ -50,7 +50,7 @@ func (packet *PlayerMessagePacket) Read(b buffer.PacketBuffer) {
 	}
 	packet.Color = b.ReadString(b.Bytes(), b.Index(), 0)
 	if packet.Variable1 = b.ReadBool(b.Bytes(), b.Index()); packet.Variable1 {
-		packet.ItemNum = b.ReadInt(b.Bytes(), b.Index())
+		packet.ItemNum = b.ReadUShort(b.Bytes(), b.Index())
 		// TODO
 		// if (modGameEditors.GetItemInt(invItemRec.Num, modEnumerations.MyItemInt.Enhancement) > 0)
 		//{

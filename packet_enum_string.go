@@ -174,16 +174,16 @@ var (
 	_ServerPacket_index_1 = [...]uint16{0, 13, 27, 39, 56, 70, 88, 99, 114, 120, 135, 153, 167, 180, 193, 208, 225, 238, 253, 265, 280}
 )
 
-func (i ServerPacket) String() string {
+func (sp ServerPacket) String() string {
 	switch {
-	case 1 <= i && i <= 134:
-		i -= 1
-		return _ServerPacket_name_0[_ServerPacket_index_0[i]:_ServerPacket_index_0[i+1]]
-	case 136 <= i && i <= 155:
-		i -= 136
-		return _ServerPacket_name_1[_ServerPacket_index_1[i]:_ServerPacket_index_1[i+1]]
+	case 1 <= sp && sp <= 134:
+		sp -= 1
+		return _ServerPacket_name_0[_ServerPacket_index_0[sp]:_ServerPacket_index_0[sp+1]]
+	case 136 <= sp && sp <= 155:
+		sp -= 136
+		return _ServerPacket_name_1[_ServerPacket_index_1[sp]:_ServerPacket_index_1[sp+1]]
 	default:
-		return "ServerPacket(" + strconv.FormatInt(int64(i), 10) + ")"
+		return "ServerPacket(" + strconv.FormatInt(int64(sp), 10) + ")"
 	}
 }
 func _() {
@@ -326,30 +326,30 @@ var (
 	_ClientPacket_index_6 = [...]uint16{0, 12, 20, 32, 38, 52, 71, 87, 96, 110, 125, 138, 157, 170, 182, 194, 204, 213, 227, 243, 263, 275, 291, 300, 313, 325, 343, 355, 369, 378, 394, 408}
 )
 
-func (i ClientPacket) String() string {
+func (cp ClientPacket) String() string {
 	switch {
-	case 1 <= i && i <= 3:
-		i -= 1
-		return _ClientPacket_name_0[_ClientPacket_index_0[i]:_ClientPacket_index_0[i+1]]
-	case 5 <= i && i <= 8:
-		i -= 5
-		return _ClientPacket_name_1[_ClientPacket_index_1[i]:_ClientPacket_index_1[i+1]]
-	case 10 <= i && i <= 22:
-		i -= 10
-		return _ClientPacket_name_2[_ClientPacket_index_2[i]:_ClientPacket_index_2[i+1]]
-	case 24 <= i && i <= 40:
-		i -= 24
-		return _ClientPacket_name_3[_ClientPacket_index_3[i]:_ClientPacket_index_3[i+1]]
-	case 42 <= i && i <= 51:
-		i -= 42
-		return _ClientPacket_name_4[_ClientPacket_index_4[i]:_ClientPacket_index_4[i+1]]
-	case 53 <= i && i <= 87:
-		i -= 53
-		return _ClientPacket_name_5[_ClientPacket_index_5[i]:_ClientPacket_index_5[i+1]]
-	case 89 <= i && i <= 119:
-		i -= 89
-		return _ClientPacket_name_6[_ClientPacket_index_6[i]:_ClientPacket_index_6[i+1]]
+	case 1 <= cp && cp <= 3:
+		cp -= 1
+		return _ClientPacket_name_0[_ClientPacket_index_0[cp]:_ClientPacket_index_0[cp+1]]
+	case 5 <= cp && cp <= 8:
+		cp -= 5
+		return _ClientPacket_name_1[_ClientPacket_index_1[cp]:_ClientPacket_index_1[cp+1]]
+	case 10 <= cp && cp <= 22:
+		cp -= 10
+		return _ClientPacket_name_2[_ClientPacket_index_2[cp]:_ClientPacket_index_2[cp+1]]
+	case 24 <= cp && cp <= 40:
+		cp -= 24
+		return _ClientPacket_name_3[_ClientPacket_index_3[cp]:_ClientPacket_index_3[cp+1]]
+	case 42 <= cp && cp <= 51:
+		cp -= 42
+		return _ClientPacket_name_4[_ClientPacket_index_4[cp]:_ClientPacket_index_4[cp+1]]
+	case 53 <= cp && cp <= 87:
+		cp -= 53
+		return _ClientPacket_name_5[_ClientPacket_index_5[cp]:_ClientPacket_index_5[cp+1]]
+	case 89 <= cp && cp <= 119:
+		cp -= 89
+		return _ClientPacket_name_6[_ClientPacket_index_6[cp]:_ClientPacket_index_6[cp+1]]
 	default:
-		return "ClientPacket(" + strconv.FormatInt(int64(i), 10) + ")"
+		return "ClientPacket(" + strconv.FormatInt(int64(cp), 10) + ")"
 	}
 }
